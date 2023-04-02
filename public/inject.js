@@ -1,12 +1,30 @@
-const EXTENSION_ID = "njglnfiegpenfclcbpgfcnmhklkfkdmd";
-const checkEthereum = async () => {
+const EXTENSION_ID = "negbhlbkojnlcicnmofbncfgokaaaakn";
+const allowedSites = ["https://forest.forkdaogov.xyz/"];
+let ethereumConnected = false;
 
-	if (window.ethereum) {
+const checkEthereum = async () => {
+	
+	if (window.ethereum && window.location && allowedSites.filter((site) => site === window.location.href).length > 0) {
 		// do something with response here, not outside the function
-		const response = await chrome.runtime.sendMessage(EXTENSION_ID, { ethereum: "ETHEREUM ENCONTRADO CHAMIGO" });
-		console.log(response);
+		if (!ethereumConnected) {
+			await window.ethereum
+				.request({ method: 'eth_requestAccounts' })
+				.then((accounts) => 
+				chrome.runtime.sendMessage(EXTENSION_ID, { message: 'account', user: accounts[0]}));
+		}
+		window.addEventListener('message', (event) => {
+			if (event?.data?.data?.data?.method === 'eth_sendTransaction') {
+				const contractCallTo = event.data.data.data.params[0].to;
+				window.localStorage.setItem('lastContractCallTo', contractCallTo)
+			}
+		})
+		const contractCallTo = window.localStorage.getItem('lastContractCallTo');
+		if (contractCallTo) {
+			chrome.runtime.sendMessage(EXTENSION_ID, { message: 'listen', content: contractCallTo})
+		}
 	} else {
 		console.log("Ethereum not found");
 	}
 }
-setInterval(checkEthereum, 1000);
+
+setInterval(checkEthereum, 2000);
