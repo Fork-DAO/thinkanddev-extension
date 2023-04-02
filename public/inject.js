@@ -1,10 +1,12 @@
 const EXTENSION_ID = "negbhlbkojnlcicnmofbncfgokaaaakn";
-const allowedSites = ["https://forest.forkdaogov.xyz/"];
+const allowedSites = [
+	"https://forest.forkdaogov.xyz/", 
+	"https://app.uniswap.org/#/swap"
+];
 let ethereumConnected = false;
 
 const checkEthereum = async () => {
-	
-	if (window.ethereum && window.location && allowedSites.filter((site) => site === window.location.href).length > 0) {
+	if (window.ethereum && window.location && allowedSites.filter((site) => window.location.href === site)) {
 		// do something with response here, not outside the function
 		if (!ethereumConnected) {
 			await window.ethereum
