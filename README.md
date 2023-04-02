@@ -1,70 +1,50 @@
-# Getting Started with Create React App
+# byDyorSide
+Extensión para validación de vulnerabilidades en smart contracts
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ * Validación de Smart Contracts verificados
+ * Analisis de seguridad y porcentaje de riesgo
+ * Detalle de vulnerabilidades para la toma de decisiones
 
-## Available Scripts
+## Visión General 
 
-In the project directory, you can run:
+### Instalación
 
-### `npm start`
+* Acceder a Chrome
+* Ingresar el buscador de extensiones desde https://chrome.google.com/webstore
+* Descargar la extensión byDYORside 
+ 
+### Cómo utilizar la extensión web
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Una vez instalada en su navegador Chrome la aplicación está lista para comenzar a realizar análisis sobre los contratos con los que el usuario esté por interactuar. 
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+_La aplicación actúa antes de que el usuario confirme cualquier transacción (ya sea de firma, transferencia de tokens, swaps, etc) brindando en el momento el resultado del análisis para que pueda tomar desiciones en base a los niveles de riesgo detectados._
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+byDYORside ejecuta un análisis interno para obtener un reporte que permita determinar el nivel de riesgo asociado. Estos niveles se muestran al usuario a través de un sistema de semáforos: 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* ROJO (Riesgo Alto): Indica que el resultado del análisis muestra vulnerabilidades importantes que pueden afectar la seguridad del usuario.
 
-### Code Splitting
+* AMARILLO (Riesgo Medio): Indica la ausencia de errores graves pero advierte de la presencia de algunas irregularidades que pueden llegar a afectar en menor medida al usuario. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+* VERDE(Riesgo Bajo): Indica la ausencia de errores graves y medios. Puede presentar warnings u oportunidades de optimización que no afectan la seguridad del usuario de ninguna manera. 
+ 
+## Herramientas de análisis 
 
-### Analyzing the Bundle Size
+byDYORside utiliza distintas herramientas para analizar los contratos: 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+* Slither: Marco de análisis estático de Solidity y detector de vulnerabilidades para auditar contratos inteligentes.
+ 
+* AI: ChatGPT es un prototipo de chatbot de inteligencia artificial desarrollado en 2022 por OpenAI que se especializa en el diálogo. El chatbot es un gran modelo de lenguaje, ajustado con técnicas de aprendizaje tanto supervisadas como de refuerzo. Utilizamos la API para obtener reportes de seguridad de un smart contract.  
 
-### Making a Progressive Web App
+## Código Abierto
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+byDYORside es open source y se encuentra al alcance de todos los que deseen acceder al código en el repositorio:  
 
-### Advanced Configuration
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+byDYORside corre bajo la licencia [MIT License](LICENSE).
 
-### Deployment
+## Legal
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+La información brindada por byDYORside es solo informativa, no se guardan de ninguna manera los datos de la wallet que interactúa con la aplicación. La desición final de ejecutar o no la transacción desde wallet queda finalmente bajo la responsabilidad del usuario. 
