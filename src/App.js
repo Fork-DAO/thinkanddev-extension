@@ -14,50 +14,41 @@ const shortenAddress = (address) => {
 };
 
 function App() {
-  const [account, setAccount] = useState();
-  const [contract, setContract] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(2000);
+  const [fromAccount, setFromAccount] = useState();
+  const [toAccount, setToAccount] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const [hasResult, setHasResult] = useState(false);
-  
+
+  // Cargar la UI de manera async usando local storage
+  const initUI = async () => {
+    setIsLoading(true);
+    // El estado actual (TODO: Definir arquitectura de estado)
+    const { eth_sendTransaction: data } = await chrome.storage.local.get('eth_sendTransaction');
+
+    // Si no hay estado, no hay nada que hacer
+    if (data.params && data.params.length > 0) {
+      // Cuenta de origen
+      if (data.params[0].from) {
+        setFromAccount(data.params[0].from);
+      }
+      // Cuenta de destino
+      if (data.params[0].to) {
+        setToAccount(data.params[0].to);
+      }
+
+    }
+
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    chrome.runtime.onMessageExternal.addListener(
-      function (request, sender, sendResponse) {
-          if (request?.message === 'account') {
-            setAccount(request.user)
-          } else if (request?.message === 'listen') {
-            setContract(request.content)
-          } 
-      });
+    initUI();
   }, [])
 
   const handleOnClick = (event) => {
     // setIsLoading(true);
     setHasResult(true);
   }
-
-  // useEffect(() => {
-  //   // exit early when we reach 0
-  //   if (!timeLeft && !isLoading) {
-  //     return;
-  //   }
-  //   console.log(`hola`)
-    
-  //   // save intervalId to clear the interval when the
-  //   // component re-renders
-  //   const intervalId = setInterval(() => {
-  //     console.log(`hola`)
-  //     setTimeLeft(timeLeft - 1);
-  //   }, 1000);
-
-  //   // clear interval on re-render to avoid memory leaks
-  //   return () => {
-  //     clearInterval(intervalId);
-  //     setIsLoading(false)
-  //   }
-  //   // add timeLeft as a dependency to re-rerun the effect
-  //   // when we update it
-  // }, [isLoading, timeLeft]);
 
   return (
     <div className="App" style={{
@@ -69,24 +60,24 @@ function App() {
         <></>
       </header>
       <body>
-        { !account || !contract ? <div>Loading...</div> : 
-          <Stack className="flex justify-center content-baseline items-center" style={{paddingTop:"30px"}}>
-            <Typography variant="h6" style={{fontSize: "0.90rem"}} color="white">User: {shortenAddress(account)}</Typography>
+        {(!fromAccount || !toAccount) ? <div>Loading...</div> :
+          <Stack className="flex justify-center content-baseline items-center" style={{ paddingTop: "30px" }}>
+            <Typography variant="h6" style={{ fontSize: "0.90rem" }} color="white">User: {shortenAddress(fromAccount)}</Typography>
             <div>
-              <Typography variant="h6" style={{fontSize: "0.90rem"}} color="white">
-                Contract: {shortenAddress(contract)}
-                <a href={`https://etherscan.io/address/${contract}`}>
-                  <OpenInNew fontSize="inherit" style={{color:"white"}}/>
+              <Typography variant="h6" style={{ fontSize: "0.90rem" }} color="white">
+                Contract: {shortenAddress(toAccount)}
+                <a href={`https://etherscan.io/address/${toAccount}`}>
+                  <OpenInNew fontSize="inherit" style={{ color: "white" }} />
                 </a>
               </Typography>
             </div>
-            { hasResult ? 
+            {hasResult ?
               (
-                <div style={{paddingTop:"40px", color: "#23e223"}}>
+                <div style={{ paddingTop: "40px", color: "#23e223" }}>
                   <CheckCircle />
                 </div>
               ) :
-              (<div style={{paddingTop:"40px"}}>
+              (<div style={{ paddingTop: "40px" }}>
                 <Button onClick={handleOnClick} variant={isLoading ? "text" : "contained"}
                   style={{
                     backgroundColor: "rgb(229 229 119)",
@@ -98,7 +89,7 @@ function App() {
             }
           </Stack>
         }
-        
+
       </body>
     </div>
   );
